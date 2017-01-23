@@ -24,6 +24,7 @@
 package org.eclipse.microprofile.faulttolerance;
 
 import java.util.concurrent.Callable;
+import java.util.concurrent.Future;
 
 import org.eclipse.microprofile.faulttolerance.spi.AsyncCallable;
 import org.eclipse.microprofile.faulttolerance.spi.AsyncRunnable;
@@ -87,7 +88,7 @@ public interface AsyncExecution<R> extends ExecutionConfig<R, AsyncExecution<R>>
      * @throws CircuitBreakerOpenException
      *             if a configured circuit breaker is open
      */
-    public abstract <T> ExecutionFuture<T> get(Callable<T> callable);
+    public abstract <T> Future<T> get(Callable<T> callable);
 
     /**
      * Executes the {@code callable} asynchronously until a successful result is
@@ -98,7 +99,7 @@ public interface AsyncExecution<R> extends ExecutionConfig<R, AsyncExecution<R>>
      * @throws CircuitBreakerOpenException
      *             if a configured circuit breaker is open
      */
-    public abstract <T> ExecutionFuture<T> get(ContextualCallable<T> callable);
+    public abstract <T> Future<T> get(ContextualCallable<T> callable);
 
     /**
      * Executes the {@code callable} asynchronously until a successful result is
@@ -111,7 +112,7 @@ public interface AsyncExecution<R> extends ExecutionConfig<R, AsyncExecution<R>>
      * @throws CircuitBreakerOpenException
      *             if a configured circuit breaker is open
      */
-    public abstract <T> ExecutionFuture<T> getAsync(AsyncCallable<T> callable);
+    public abstract <T> Future<T> getAsync(AsyncCallable<T> callable);
 
     /**
      * Executes the {@code runnable} asynchronously until successful or until
@@ -122,7 +123,7 @@ public interface AsyncExecution<R> extends ExecutionConfig<R, AsyncExecution<R>>
      * @throws CircuitBreakerOpenException
      *             if a configured circuit breaker is open
      */
-    public abstract ExecutionFuture<Void> run(Runnable runnable);
+    public abstract Future<Void> run(Runnable runnable);
 
     /**
      * Executes the {@code runnable} asynchronously until successful or until
@@ -135,6 +136,6 @@ public interface AsyncExecution<R> extends ExecutionConfig<R, AsyncExecution<R>>
      * @throws CircuitBreakerOpenException
      *             if a configured circuit breaker is open
      */
-    public abstract ExecutionFuture<Void> runAsync(AsyncRunnable runnable);
+    public abstract Future<Void> runAsync(AsyncRunnable runnable);
 
 }

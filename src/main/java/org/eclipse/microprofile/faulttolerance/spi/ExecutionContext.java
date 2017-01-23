@@ -24,43 +24,23 @@ import java.time.Duration;
  * Contextual execution information.
  *
  * @author Jonathan Halterman
+ * @author Emily Jiang
  */
-public class ExecutionContext {
-    final Duration startTime;
-    /** Number of execution attempts */
-    volatile int executions;
-
-    ExecutionContext(Duration startTime) {
-        this.startTime = startTime;
-    }
-
-    ExecutionContext(ExecutionContext context) {
-        this.startTime = context.startTime;
-        this.executions = context.executions;
-    }
+public interface ExecutionContext {
 
     /**
      * Returns the elapsed time since initial execution began.
      */
-    public Duration getElapsedTime() {
-        return Duration.ofNanos(System.nanoTime() - startTime.toNanos());
-    }
+    public Duration getElapsedTime();
 
     /**
      * Gets the number of executions so far.
      */
-    public int getExecutions() {
-        return executions;
-    }
+    public int getExecutions();
 
     /**
      * Returns the time that the initial execution started.
      */
-    public Duration getStartTime() {
-        return startTime;
-    }
+    public Duration getStartTime();
 
-    ExecutionContext copy() {
-        return new ExecutionContext(this);
-    }
 }
