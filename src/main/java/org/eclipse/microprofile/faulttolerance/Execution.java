@@ -26,14 +26,12 @@ import java.util.concurrent.ThreadPoolExecutor;
  * @author Jonathan Halterman
  * @author Emily Jiang
  */
-public interface Execution<R, T> extends ExecutionConfig<R, T> {
+public interface Execution {
 
-    @Override
-    public T with(RetryPolicy retryPolicy);
+  <T> SyncExecution<T> with(RetryPolicy retryPolicy);
 
-    @Override
-    public T with(CircuitBreaker circuitBreaker);
+  <T> SyncExecution<T> with(CircuitBreaker circuitBreaker);
 
-    public T with(ThreadPoolExecutor pool);
+  <T> SyncExecution<T> with(ThreadPoolExecutor pool);
 
 }
