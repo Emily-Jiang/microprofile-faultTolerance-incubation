@@ -32,6 +32,33 @@ import org.eclipse.microprofile.faulttolerance.spi.ContextualCallable;
 
 public interface AsyncExecution<R> extends ExecutionConfig<R, AsyncExecution<R>> {
 
+  /**
+   * Completes the execution and the associated {@code FutureResult}.
+   *
+   * @throws IllegalStateException if the execution is already complete
+   */
+  void complete();
+
+  /**
+   * Attempts to complete the execution and the associated {@code FutureResult} with the {@code result}. Returns true on
+   * success, else false if completion failed and the execution should be retried via {@link #retry()}.
+   *
+   * @throws IllegalStateException if the execution is already complete
+   */
+  boolean complete(Object result);
+
+  /**
+   * Attempts to complete the execution and the associated {@code FutureResult} with the {@code result} and
+   * {@code failure}. Returns true on success, else false if completion failed and the execution should be retried via
+   * {@link #retry()}.
+   * <p>
+   * Note: the execution may be completed even when the {@code failure} is not {@code null}, such as when the
+   * RetryPolicy does not allow retries for the {@code failure}.
+   *
+   * @throws IllegalStateException if the execution is already complete
+   */
+  boolean complete(Object result, Throwable failure);
+  
     /**
      * Executes the {@code callable} asynchronously until the resulting future
      * is successfully completed or the configured {@link RetryPolicy} is
@@ -114,6 +141,40 @@ public interface AsyncExecution<R> extends ExecutionConfig<R, AsyncExecution<R>>
      */
     public abstract <T> Future<T> getAsync(AsyncCallable<T> callable);
 
+    /**
+     * Records an execution and returns true if a retry has been scheduled for else returns returns false and completes
+     * the execution and associated {@code FutureResult}.
+     *
+     * @throws IllegalStateException if a retry method has already been called or the execution is already complete
+     */
+    boolean retry();
+
+    /**
+     * Records an execution and returns true if a retry has been scheduled for the {@code result}, else returns false and
+     * marks the execution and associated {@code FutureResult} as complete.
+     *
+     * @throws IllegalStateException if a retry method has already been called or the execution is already complete
+     */
+    boolean retryFor(Object result);
+
+    /**
+     * Records an execution and returns true if a retry has been scheduled for the {@code result} or {@code failure}, else
+     * returns false and marks the execution and associated {@code FutureResult} as complete.
+     * 
+     * @throws IllegalStateException if a retry method has already been called or the execution is already complete
+     */
+    boolean retryFor(Object result, Throwable failure);
+
+    /**
+     * Records an execution and returns true if a retry has been scheduled for the {@code failure}, else returns false and
+     * marks the execution and associated {@code FutureResult} as complete.
+     *
+     * @throws NullPointerException if {@code failure} is null
+     * @throws IllegalStateException if a retry method has already been called or the execution is already complete
+     */
+    boolean retryOn(Throwable failure);
+
+    
     /**
      * Executes the {@code runnable} asynchronously until successful or until
      * the configured {@link RetryPolicy} is exceeded.
