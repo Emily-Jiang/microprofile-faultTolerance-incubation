@@ -30,6 +30,14 @@ import org.eclipse.microprofile.faulttolerance.spi.AsyncCallable;
 import org.eclipse.microprofile.faulttolerance.spi.AsyncRunnable;
 import org.eclipse.microprofile.faulttolerance.spi.ContextualCallable;
 
+/**
+ * Performs asynchronous executions with failures handled according to a configured {@link #with(RetryPolicy) retry
+ * policy}, {@link #with(CircuitBreaker) circuit breaker} and
+ * {@link #withFallback(java.util.function.BiFunction) fallback}.
+ * 
+ * @author Jonathan Halterman
+ * @param <R> result type
+ */
 public interface AsyncExecution<R> extends ExecutionConfig<R, AsyncExecution<R>> {
 
   /**
