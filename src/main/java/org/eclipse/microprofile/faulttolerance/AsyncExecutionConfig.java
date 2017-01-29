@@ -23,7 +23,6 @@ import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 import org.eclipse.microprofile.faulttolerance.spi.ContextualResultListener;
-import org.eclipse.microprofile.faulttolerance.spi.ExecutionContext;
 import org.eclipse.microprofile.faulttolerance.spi.Scheduler;
 
 /**

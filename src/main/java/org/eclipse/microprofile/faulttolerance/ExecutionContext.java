@@ -16,7 +16,7 @@
  *
  *******************************************************************************/
 
-package org.eclipse.microprofile.faulttolerance.spi;
+package org.eclipse.microprofile.faulttolerance;
 
 import java.time.Duration;
 

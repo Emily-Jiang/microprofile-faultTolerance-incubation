@@ -20,7 +20,7 @@
  *
  * @author Jonathan Halterman
  */
-package org.eclipse.microprofile.faulttolerance.spi;
+package org.eclipse.microprofile.faulttolerance;
 
 public interface AsyncExecutionContext extends ExecutionContext {
 

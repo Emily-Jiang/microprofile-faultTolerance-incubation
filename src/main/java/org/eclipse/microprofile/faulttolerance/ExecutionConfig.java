@@ -28,7 +28,6 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 
 import org.eclipse.microprofile.faulttolerance.spi.ContextualResultListener;
-import org.eclipse.microprofile.faulttolerance.spi.ExecutionContext;
 
 /**
  * Failsafe configuration.

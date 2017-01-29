@@ -18,6 +18,8 @@
 
 package org.eclipse.microprofile.faulttolerance.spi;
 
+import org.eclipse.microprofile.faulttolerance.ExecutionContext;
+
 /**
  * Listens for an execution result, providing {@link ExecutionContext} that
  * describe executions so far.

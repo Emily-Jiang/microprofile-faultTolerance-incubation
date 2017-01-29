@@ -18,6 +18,8 @@
 
 package org.eclipse.microprofile.faulttolerance.spi;
 
+import org.eclipse.microprofile.faulttolerance.ExecutionContext;
+
 /**
  * A callable that provides execution context.
  *
