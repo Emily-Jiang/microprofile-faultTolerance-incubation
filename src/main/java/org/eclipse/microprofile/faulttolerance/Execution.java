@@ -28,16 +28,6 @@ import java.util.concurrent.ThreadPoolExecutor;
  */
 public interface Execution<R, T> extends ExecutionConfig<R, T> {
 
-    /**
-     * Records and attempts to complete the execution with the {@code result}.
-     * Returns true on success, else false if completion failed and execution
-     * should be retried.
-     *
-     * @throws IllegalStateException
-     *             if the execution is already complete
-     */
-    public boolean complete(Object result);
-
     @Override
     public T with(RetryPolicy retryPolicy);
 
