@@ -18,8 +18,6 @@
 
 package org.eclipse.microprofile.faulttolerance;
 
-import java.util.concurrent.ThreadPoolExecutor;
-
 /**
  * Simple, sophisticated failure handling.
  *
@@ -44,7 +42,5 @@ public interface Execution {
    * @throws NullPointerException if {@code circuitBreaker} is null
    */
   <T> SyncExecution<T> with(CircuitBreaker circuitBreaker);
-
-  <T> SyncExecution<T> with(ThreadPoolExecutor pool);
 
 }

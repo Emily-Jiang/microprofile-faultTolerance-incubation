@@ -368,13 +368,6 @@ public interface ExecutionConfig<R, F> {
     public F withFallback(R fallback);
 
     /**
-     * Configures the thread pool to be used for the execution
-     * @param executor
-     * @return
-     */
-    public F withBulkhead(ThreadPoolExecutor executor);
-
-    /**
      * Configures the timeout
      * @param time
      * @param timeUnit
