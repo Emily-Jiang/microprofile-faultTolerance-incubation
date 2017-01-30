@@ -30,8 +30,16 @@ import org.eclipse.microprofile.faulttolerance.spi.AsyncCallable;
 import org.eclipse.microprofile.faulttolerance.spi.AsyncRunnable;
 import org.eclipse.microprofile.faulttolerance.spi.ContextualCallable;
 
+/**
+ * Performs asynchronous executions with failures handled according to a configured {@link #with(RetryPolicy) retry
+ * policy}, {@link #with(CircuitBreaker) circuit breaker} and
+ * {@link #withFallback(java.util.function.BiFunction) fallback}.
+ * 
+ * @author Jonathan Halterman
+ * @param <R> result type
+ */
 public interface AsyncExecution<R> extends ExecutionConfig<R, AsyncExecution<R>> {
-
+  
     /**
      * Executes the {@code callable} asynchronously until the resulting future
      * is successfully completed or the configured {@link RetryPolicy} is
@@ -113,7 +121,7 @@ public interface AsyncExecution<R> extends ExecutionConfig<R, AsyncExecution<R>>
      *             if a configured circuit breaker is open
      */
     public abstract <T> Future<T> getAsync(AsyncCallable<T> callable);
-
+    
     /**
      * Executes the {@code runnable} asynchronously until successful or until
      * the configured {@link RetryPolicy} is exceeded.

@@ -20,7 +20,6 @@ package org.eclipse.microprofile.faulttolerance;
 
 import java.time.Duration;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 import java.util.function.BiPredicate;
 import java.util.function.Predicate;
 
@@ -119,7 +118,7 @@ public interface CircuitBreaker {
      * Returns the delay before allowing another execution on the circuit.
      * Defaults to {@link Duration#NONE}.
      *
-     * @see #withDelay(long, TimeUnit)
+     * @see #withDelay(Duration)
      */
     public Duration getDelay();
 
@@ -152,7 +151,7 @@ public interface CircuitBreaker {
      * Returns timeout for executions else {@code null} if none has been
      * configured.
      *
-     * @see #withTimeout(long, TimeUnit)
+     * @see #withTimeout(Duration)
      */
     public Duration getTimeout();
 
@@ -242,11 +241,11 @@ public interface CircuitBreaker {
      * half-open.
      *
      * @throws NullPointerException
-     *             if {@code timeUnit} is null
+     *             if {@code delay} is null
      * @throws IllegalArgumentException
      *             if {@code delay} <= 0
      */
-    public CircuitBreaker withDelay(long delay, TimeUnit timeUnit);
+    public CircuitBreaker withDelay(Duration delay);
 
     /**
      * Sets the number of successive failures that must occur when in a closed
@@ -311,10 +310,10 @@ public interface CircuitBreaker {
      * naturally complete.
      *
      * @throws NullPointerException
-     *             if {@code timeUnit} is null
+     *             if {@code timeout} is null
      * @throws IllegalArgumentException
      *             if {@code timeout} <= 0
      */
-    public CircuitBreaker withTimeout(long timeout, TimeUnit timeUnit);
+    public CircuitBreaker withTimeout(Duration timeout);
 
 }

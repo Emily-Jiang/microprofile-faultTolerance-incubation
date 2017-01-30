@@ -28,7 +28,6 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 
 import org.eclipse.microprofile.faulttolerance.spi.ContextualResultListener;
-import org.eclipse.microprofile.faulttolerance.spi.ExecutionContext;
 
 /**
  * Failsafe configuration.
@@ -367,13 +366,6 @@ public interface ExecutionConfig<R, F> {
      *             if {@code withFallback} method has already been called
      */
     public F withFallback(R fallback);
-
-    /**
-     * Configures the thread pool to be used for the execution
-     * @param executor
-     * @return
-     */
-    public F withBulkhead(ThreadPoolExecutor executor);
 
     /**
      * Configures the timeout

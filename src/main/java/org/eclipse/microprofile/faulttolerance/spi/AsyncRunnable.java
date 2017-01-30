@@ -18,14 +18,17 @@
 
 package org.eclipse.microprofile.faulttolerance.spi;
 
-import org.eclipse.microprofile.faulttolerance.AsyncExecution;
+import org.eclipse.microprofile.faulttolerance.AsyncExecutionContext;
 
 /**
- * A runnable that manually triggers asynchronous retries or completion via an
- * asynchronous execution.
+ * A runnable that manually triggers asynchronous retries or completion via an asynchronous execution.
  *
  * @author Jonathan Halterman
  */
 public interface AsyncRunnable {
-    void run(AsyncExecution execution) throws Exception;
+  /**
+   * Handles an asynchronous execution, allowing retries or completion to be performed via the {@code execution}
+   * reference.
+   */
+  void run(AsyncExecutionContext execution) throws Exception;
 }

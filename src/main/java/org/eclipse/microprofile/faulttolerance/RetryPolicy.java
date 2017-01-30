@@ -20,7 +20,6 @@ package org.eclipse.microprofile.faulttolerance;
 
 import java.time.Duration;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 import java.util.function.BiPredicate;
 import java.util.function.Predicate;
 
@@ -95,10 +94,10 @@ public interface RetryPolicy {
     /**
      * Returns whether the policy allows retries according to the configured
      * {@link #withMaxRetries(int) maxRetries} and
-     * {@link #withMaxDuration(long, TimeUnit) maxDuration}.
+     * {@link #withMaxDuration(Duration) maxDuration}.
      *
      * @see #withMaxRetries(int)
-     * @see #withMaxDuration(long, TimeUnit)
+     * @see #withMaxDuration(Duration)
      */
     public boolean allowsRetries();
 
@@ -136,23 +135,23 @@ public interface RetryPolicy {
     /**
      * Returns the delay between retries. Defaults to {@link Duration#NONE}.
      *
-     * @see #withDelay(long, TimeUnit)
-     * @see #withBackoff(long, long, TimeUnit)
-     * @see #withBackoff(long, long, TimeUnit, double)
+     * @see #withDelay(Duration)
+     * @see #withBackoff(Duration, Duration)
+     * @see #withBackoff(Duration, Duration, double)
      */
     public Duration getDelay();
 
     /**
      * Returns the delay factor for backoff retries.
      *
-     * @see #withBackoff(long, long, TimeUnit, double)
+     * @see #withBackoff(Duration, Duration, double)
      */
     public double getDelayFactor();
 
     /**
      * Returns the jitter, else {@code null} if none has been configured.
      *
-     * @see #withJitter(long, TimeUnit)
+     * @see #withJitter(Duration)
      */
     public Duration getJitter();
 
@@ -166,14 +165,14 @@ public interface RetryPolicy {
     /**
      * Returns the max delay between backoff retries.
      *
-     * @see #withBackoff(long, long, TimeUnit)
+     * @see #withBackoff(Duration, Duration)
      */
     public Duration getMaxDelay();
 
     /**
      * Returns the max duration to perform retries for.
      *
-     * @see #withMaxDuration(long, TimeUnit)
+     * @see #withMaxDuration(Duration)
      */
     public Duration getMaxDuration();
 
@@ -244,16 +243,16 @@ public interface RetryPolicy {
      * {@code maxDelay} and multiplying successive delays by a factor of 2.
      *
      * @throws NullPointerException
-     *             if {@code timeUnit} is null
+     *             if {@code delay} or {@code duration} are null
      * @throws IllegalStateException
      *             if {@code delay} is >= the
-     *             {@link RetryPolicy#withMaxDuration(long, TimeUnit)
+     *             {@link RetryPolicy#withMaxDuration(Duration)
      *             maxDuration}
      * @throws IllegalArgumentException
      *             if {@code delay} is <= 0 or {@code delay} is >=
      *             {@code maxDelay}
      */
-    public RetryPolicy withBackoff(long delay, long maxDelay, TimeUnit timeUnit);
+    public RetryPolicy withBackoff(Duration delay, Duration maxDelay);
 
     /**
      * Sets the {@code delay} between retries, exponentially backing off to the
@@ -261,30 +260,30 @@ public interface RetryPolicy {
      * {@code delayFactor}.
      *
      * @throws NullPointerException
-     *             if {@code timeUnit} is null
+     *             if {@code delay} or {@code duration} are null
      * @throws IllegalStateException
      *             if {@code delay} is >= the
-     *             {@link RetryPolicy#withMaxDuration(long, TimeUnit)
+     *             {@link RetryPolicy#withMaxDuration(Duration)
      *             maxDuration}
      * @throws IllegalArgumentException
      *             if {@code delay} <= 0, {@code delay} is >= {@code maxDelay},
      *             or the {@code delayFactor} is <= 1
      */
-    public RetryPolicy withBackoff(long delay, long maxDelay, TimeUnit timeUnit, double delayFactor);
+    public RetryPolicy withBackoff(Duration delay, Duration maxDelay, double delayFactor);
 
     /**
      * Sets the {@code delay} between retries.
      *
      * @throws NullPointerException
-     *             if {@code timeUnit} is null
+     *             if {@code duration} is null
      * @throws IllegalArgumentException
      *             if {@code delay} <= 0
      * @throws IllegalStateException
      *             if {@code delay} is >= the
-     *             {@link RetryPolicy#withMaxDuration(long, TimeUnit)
+     *             {@link RetryPolicy#withMaxDuration(Duration)
      *             maxDuration}
      */
-    public RetryPolicy withDelay(long delay, TimeUnit timeUnit);
+    public RetryPolicy withDelay(Duration delay);
 
     /**
      * Sets the {@code jitterFactor} to randomly vary retry delays by. For each
@@ -294,14 +293,14 @@ public interface RetryPolicy {
      * {@code jitterFactor} of {@code .25} will result in a random retry delay
      * between {@code 75} and {@code 125} milliseconds.
      * <p>
-     * Jitter should be combined with {@link #withDelay(long, TimeUnit) fixed}
-     * or {@link #withBackoff(long, long, TimeUnit) exponential backoff} delays.
+     * Jitter should be combined with {@link #withDelay(Duration) fixed}
+     * or {@link #withBackoff(Duration, Duration) exponential backoff} delays.
      *
      * @throws IllegalArgumentException
      *             if {@code duration} is <= 0 or > 1
      * @throws IllegalStateException
      *             if no delay has been configured or
-     *             {@link #withJitter(long, TimeUnit)} has already been called
+     *             {@link #withJitter(Duration)} has already been called
      */
     public RetryPolicy withJitter(double jitterFactor);
 
@@ -312,30 +311,30 @@ public interface RetryPolicy {
      * will randomly add between {@code -100} and {@code 100} milliseconds to
      * each retry delay.
      * <p>
-     * Jitter should be combined with {@link #withDelay(long, TimeUnit) fixed}
-     * or {@link #withBackoff(long, long, TimeUnit) exponential backoff} delays.
+     * Jitter should be combined with {@link #withDelay(Duration) fixed}
+     * or {@link #withBackoff(Duration, Duration) exponential backoff} delays.
      *
      * @throws NullPointerException
-     *             if {@code timeUnit} is null
+     *             if {@code jitter} is null
      * @throws IllegalArgumentException
      *             if {@code jitter} is <= 0
      * @throws IllegalStateException
      *             if no delay has been configured or
      *             {@link #withJitter(double)} has already been called
      */
-    public RetryPolicy withJitter(long jitter, TimeUnit timeUnit);
+    public RetryPolicy withJitter(Duration jitter);
 
     /**
      * Sets the max duration to perform retries for, else the execution will be
      * failed.
      *
      * @throws NullPointerException
-     *             if {@code timeUnit} is null
+     *             if {@code maxDuration} is null
      * @throws IllegalStateException
      *             if {@code maxDuration} is <= the
-     *             {@link RetryPolicy#withDelay(long, TimeUnit) delay}
+     *             {@link RetryPolicy#withDelay(Duration) delay}
      */
-    public RetryPolicy withMaxDuration(long maxDuration, TimeUnit timeUnit);
+    public RetryPolicy withMaxDuration(Duration maxDuration);
 
     /**
      * Sets the max number of retries to perform. {@code -1} indicates to retry

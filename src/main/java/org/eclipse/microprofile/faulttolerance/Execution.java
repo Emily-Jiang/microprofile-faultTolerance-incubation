@@ -18,32 +18,29 @@
 
 package org.eclipse.microprofile.faulttolerance;
 
-import java.util.concurrent.ThreadPoolExecutor;
-
 /**
  * Simple, sophisticated failure handling.
  *
  * @author Jonathan Halterman
  * @author Emily Jiang
  */
-public interface Execution<R, T> extends ExecutionConfig<R, T> {
+public interface Execution {
+  /**
+   * Creates and returns a new SyncExecution instance that will perform executions and retries synchronously according
+   * to the {@code retryPolicy}.
+   * 
+   * @param <T> result type
+   * @throws NullPointerException if {@code retryPolicy} is null
+   */
+  <T> SyncExecution<T> with(RetryPolicy retryPolicy);
 
-    /**
-     * Records and attempts to complete the execution with the {@code result}.
-     * Returns true on success, else false if completion failed and execution
-     * should be retried.
-     *
-     * @throws IllegalStateException
-     *             if the execution is already complete
-     */
-    public boolean complete(Object result);
-
-    @Override
-    public T with(RetryPolicy retryPolicy);
-
-    @Override
-    public T with(CircuitBreaker circuitBreaker);
-
-    public T with(ThreadPoolExecutor pool);
+  /**
+   * Creates and returns a new SyncExecution instance that will perform executions and retries synchronously according
+   * to the {@code circuitBreaker}.
+   * 
+   * @param <T> result type
+   * @throws NullPointerException if {@code circuitBreaker} is null
+   */
+  <T> SyncExecution<T> with(CircuitBreaker circuitBreaker);
 
 }
