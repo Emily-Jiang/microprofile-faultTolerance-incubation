@@ -27,9 +27,22 @@ import java.util.concurrent.ThreadPoolExecutor;
  * @author Emily Jiang
  */
 public interface Execution {
-
+  /**
+   * Creates and returns a new SyncExecution instance that will perform executions and retries synchronously according
+   * to the {@code retryPolicy}.
+   * 
+   * @param <T> result type
+   * @throws NullPointerException if {@code retryPolicy} is null
+   */
   <T> SyncExecution<T> with(RetryPolicy retryPolicy);
 
+  /**
+   * Creates and returns a new SyncExecution instance that will perform executions and retries synchronously according
+   * to the {@code circuitBreaker}.
+   * 
+   * @param <T> result type
+   * @throws NullPointerException if {@code circuitBreaker} is null
+   */
   <T> SyncExecution<T> with(CircuitBreaker circuitBreaker);
 
   <T> SyncExecution<T> with(ThreadPoolExecutor pool);
