@@ -27,7 +27,6 @@ import java.util.concurrent.TimeUnit;
  *
  * @author Jonathan Halterman
  * @see Schedulers
- * @see net.jodah.failsafe.util.concurrent.DefaultScheduledFuture
  */
 public interface Scheduler {
     /**
