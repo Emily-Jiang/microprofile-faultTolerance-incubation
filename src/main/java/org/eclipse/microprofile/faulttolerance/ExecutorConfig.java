@@ -21,7 +21,6 @@ package org.eclipse.microprofile.faulttolerance;
 import java.time.Duration;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.ThreadPoolExecutor;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
@@ -30,14 +29,14 @@ import java.util.function.Function;
 import org.eclipse.microprofile.faulttolerance.spi.ContextualResultListener;
 
 /**
- * Failsafe configuration.
+ * Executor configuration.
  *
  * @author Jonathan Halterman
  * @author Emily Jiang
  * @param <R> result type
- * @param <F> failsafe type - {@link SyncFailsafe} or {@link AsyncFailsafe}
+ * @param <F> executor type - {@link SyncExecutor} or {@link AsyncExecutor}
  */
-public interface ExecutionConfig<R, F> {
+public interface ExecutorConfig<R, F> {
 
     /**
      * Registers the {@code listener} to be called when an execution is aborted.
@@ -254,7 +253,7 @@ public interface ExecutionConfig<R, F> {
      * Registers the {@code listener} to be called when an execution is
      * successful.
      */
-    public F onSuccess(BiConsumer<? extends R, ExecutionContext> listener);
+    public F onSuccess(BiConsumer<? extends R, Execution> listener);
 
     /**
      * Registers the {@code listener} to be called when an execution is
@@ -266,7 +265,7 @@ public interface ExecutionConfig<R, F> {
      * Registers the {@code listener} to be called asynchronously on the
      * {@code executor} when an execution is successful.
      */
-    public F onSuccessAsync(BiConsumer<? extends R, ExecutionContext> listener,
+    public F onSuccessAsync(BiConsumer<? extends R, Execution> listener,
                     ExecutorService executor);
 
     /**

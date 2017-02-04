@@ -18,29 +18,29 @@
 
 package org.eclipse.microprofile.faulttolerance;
 
+import java.time.Duration;
+
 /**
- * Simple, sophisticated failure handling.
+ * Contextual execution information.
  *
  * @author Jonathan Halterman
  * @author Emily Jiang
  */
 public interface Execution {
-  /**
-   * Creates and returns a new SyncExecution instance that will perform executions and retries synchronously according
-   * to the {@code retryPolicy}.
-   * 
-   * @param <T> result type
-   * @throws NullPointerException if {@code retryPolicy} is null
-   */
-  <T> SyncExecution<T> with(RetryPolicy retryPolicy);
 
-  /**
-   * Creates and returns a new SyncExecution instance that will perform executions and retries synchronously according
-   * to the {@code circuitBreaker}.
-   * 
-   * @param <T> result type
-   * @throws NullPointerException if {@code circuitBreaker} is null
-   */
-  <T> SyncExecution<T> with(CircuitBreaker circuitBreaker);
+    /**
+     * Returns the elapsed time since initial execution began.
+     */
+    public Duration getElapsedTime();
+
+    /**
+     * Gets the number of executions so far.
+     */
+    public int getExecutions();
+
+    /**
+     * Returns the time that the initial execution started.
+     */
+    public Duration getStartTime();
 
 }

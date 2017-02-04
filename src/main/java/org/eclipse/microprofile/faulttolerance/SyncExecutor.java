@@ -27,13 +27,13 @@ import org.eclipse.microprofile.faulttolerance.spi.Scheduler;
 /**
  * Performs synchronous executions with failures handled according to a configured {@link #with(RetryPolicy) retry
  * policy}, {@link #with(CircuitBreaker) circuit breaker} and
- * {@link #withFallback(net.jodah.failsafe.function.BiFunction) fallback}.
+ * {@link #withFallback(java.util.function.BiFunction) fallback}.
  *
  * @author Jonathan Halterman
  * @author Emily Jiang
  * @param <R> listener result type
  */
-public interface SyncExecution<R> extends ExecutionConfig<R, SyncExecution<R>> {
+public interface SyncExecutor<R> extends ExecutorConfig<R, SyncExecutor<R>> {
 
     /**
      * Executes the {@code callable} until a successful result is returned or
@@ -41,7 +41,7 @@ public interface SyncExecution<R> extends ExecutionConfig<R, SyncExecution<R>> {
      *
      * @throws NullPointerException
      *             if the {@code callable} is null
-     * @throws FailsafeException
+     * @throws ExecutionException
      *             if the {@code callable} fails with a checked Exception or if
      *             interrupted while waiting to perform a retry.
      * @throws CircuitBreakerOpenException
@@ -55,7 +55,7 @@ public interface SyncExecution<R> extends ExecutionConfig<R, SyncExecution<R>> {
      *
      * @throws NullPointerException
      *             if the {@code callable} is null
-     * @throws FailsafeException
+     * @throws ExecutionException
      *             if the {@code callable} fails with a checked Exception or if
      *             interrupted while waiting to perform a retry.
      * @throws CircuitBreakerOpenException
@@ -69,7 +69,7 @@ public interface SyncExecution<R> extends ExecutionConfig<R, SyncExecution<R>> {
      *
      * @throws NullPointerException
      *             if the {@code runnable} is null
-     * @throws FailsafeException
+     * @throws ExecutionException
      *             if the {@code runnable} fails with a checked Exception or if
      *             interrupted while waiting to perform a retry.
      * @throws CircuitBreakerOpenException
@@ -78,21 +78,21 @@ public interface SyncExecution<R> extends ExecutionConfig<R, SyncExecution<R>> {
     public abstract void run(Runnable runnable);
 
     /**
-     * Creates and returns a new AsyncFailsafe instance that will perform
+     * Creates and returns a new AsyncExecutor instance that will perform
      * executions and retries asynchronously via the {@code executor}.
      *
      * @throws NullPointerException
      *             if {@code executor} is null
      */
-    public abstract AsyncExecution<R> with(ScheduledExecutorService executor);
+    public abstract AsyncExecutor<R> with(ScheduledExecutorService executor);
 
     /**
-     * Creates and returns a new AsyncFailsafe instance that will perform
+     * Creates and returns a new AsyncExecutor instance that will perform
      * executions and retries asynchronously via the {@code scheduler}.
      *
      * @throws NullPointerException
      *             if {@code scheduler} is null
      */
-    public abstract AsyncExecution<R> with(Scheduler scheduler);
+    public abstract AsyncExecutor<R> with(Scheduler scheduler);
 
 }

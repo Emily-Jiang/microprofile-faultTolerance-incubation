@@ -18,10 +18,10 @@
 
 package org.eclipse.microprofile.faulttolerance.spi;
 
-import org.eclipse.microprofile.faulttolerance.ExecutionContext;
+import org.eclipse.microprofile.faulttolerance.Execution;
 
 /**
- * Listens for an execution result, providing {@link ExecutionContext} that
+ * Listens for an execution result, providing {@link Execution} that
  * describe executions so far.
  *
  * @author Jonathan Halterman
@@ -40,5 +40,5 @@ public interface ContextualResultListener<R, F extends Throwable> {
      *            The execution failure, else {@code null} if the call was
      *            successful
      */
-    void onResult(R result, F failure, ExecutionContext context) throws Exception;
+    void onResult(R result, F failure, Execution context) throws Exception;
 }

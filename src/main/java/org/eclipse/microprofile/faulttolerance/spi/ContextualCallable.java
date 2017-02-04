@@ -18,7 +18,7 @@
 
 package org.eclipse.microprofile.faulttolerance.spi;
 
-import org.eclipse.microprofile.faulttolerance.ExecutionContext;
+import org.eclipse.microprofile.faulttolerance.Execution;
 
 /**
  * A callable that provides execution context.
@@ -28,5 +28,5 @@ import org.eclipse.microprofile.faulttolerance.ExecutionContext;
  *            result type
  */
 public interface ContextualCallable<T> {
-    T call(ExecutionContext context) throws Exception;
+    T call(Execution context) throws Exception;
 }
