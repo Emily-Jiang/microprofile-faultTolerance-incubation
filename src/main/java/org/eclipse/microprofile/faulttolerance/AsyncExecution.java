@@ -19,131 +19,69 @@
  * Tracks asynchronous executions and allows retries to be scheduled according to a {@link RetryPolicy}.
  *
  * @author Jonathan Halterman
- * @author Emily Jiang
  */
 package org.eclipse.microprofile.faulttolerance;
 
-import java.util.concurrent.Callable;
-import java.util.concurrent.Future;
+public interface AsyncExecution extends Execution {
 
-import org.eclipse.microprofile.faulttolerance.spi.AsyncCallable;
-import org.eclipse.microprofile.faulttolerance.spi.AsyncRunnable;
-import org.eclipse.microprofile.faulttolerance.spi.ContextualCallable;
+  /**
+   * Completes the execution and the associated {@code Future}.
+   *
+   * @throws IllegalStateException if the execution is already complete
+   */
+  void complete();
 
-/**
- * Performs asynchronous executions with failures handled according to a configured {@link #with(RetryPolicy) retry
- * policy}, {@link #with(CircuitBreaker) circuit breaker} and
- * {@link #withFallback(java.util.function.BiFunction) fallback}.
- * 
- * @author Jonathan Halterman
- * @param <R> result type
- */
-public interface AsyncExecution<R> extends ExecutionConfig<R, AsyncExecution<R>> {
-  
-    /**
-     * Executes the {@code callable} asynchronously until the resulting future
-     * is successfully completed or the configured {@link RetryPolicy} is
-     * exceeded.
-     * <p>
-     * Supported on Java 8 and above.
-     *
-     * @throws NullPointerException
-     *             if the {@code callable} is null
-     * @throws CircuitBreakerOpenException
-     *             if a configured circuit breaker is open
-     */
-    public abstract <T> java.util.concurrent.CompletableFuture<T> future(
-                    Callable<java.util.concurrent.CompletableFuture<T>> callable);
+  /**
+   * Attempts to complete the execution and the associated {@code Future} with the {@code result}. Returns true on
+   * success, else false if completion failed and the execution should be retried via {@link #retry()}.
+   *
+   * @throws IllegalStateException if the execution is already complete
+   */
+  boolean complete(Object result);
 
-    /**
-     * Executes the {@code callable} asynchronously until the resulting future
-     * is successfully completed or the configured {@link RetryPolicy} is
-     * exceeded.
-     * <p>
-     * Supported on Java 8 and above.
-     *
-     * @throws NullPointerException
-     *             if the {@code callable} is null
-     * @throws CircuitBreakerOpenException
-     *             if a configured circuit breaker is open
-     */
-    public abstract <T> java.util.concurrent.CompletableFuture<T> future(
-                    ContextualCallable<java.util.concurrent.CompletableFuture<T>> callable);
+  /**
+   * Attempts to complete the execution and the associated {@code Future} with the {@code result} and
+   * {@code failure}. Returns true on success, else false if completion failed and the execution should be retried via
+   * {@link #retry()}.
+   * <p>
+   * Note: the execution may be completed even when the {@code failure} is not {@code null}, such as when the
+   * RetryPolicy does not allow retries for the {@code failure}.
+   *
+   * @throws IllegalStateException if the execution is already complete
+   */
+  boolean complete(Object result, Throwable failure);
 
-    /**
-     * Executes the {@code callable} asynchronously until the resulting future
-     * is successfully completed or the configured {@link RetryPolicy} is
-     * exceeded. This method is intended for integration with asynchronous code.
-     * Retries must be manually scheduled via one of the
-     * {@code AsyncExecution.retry} methods.
-     * <p>
-     * Supported on Java 8 and above.
-     *
-     * @throws NullPointerException
-     *             if the {@code callable} is null
-     * @throws CircuitBreakerOpenException
-     *             if a configured circuit breaker is open
-     */
-    public abstract <T> java.util.concurrent.CompletableFuture<T> futureAsync(
-                    AsyncCallable<java.util.concurrent.CompletableFuture<T>> callable);
+  /**
+   * Records an execution and returns true if a retry has been scheduled for else returns returns false and completes
+   * the execution and associated {@code Future}.
+   *
+   * @throws IllegalStateException if a retry method has already been called or the execution is already complete
+   */
+  boolean retry();
 
-    /**
-     * Executes the {@code callable} asynchronously until a successful result is
-     * returned or the configured {@link RetryPolicy} is exceeded.
-     *
-     * @throws NullPointerException
-     *             if the {@code callable} is null
-     * @throws CircuitBreakerOpenException
-     *             if a configured circuit breaker is open
-     */
-    public abstract <T> Future<T> get(Callable<T> callable);
+  /**
+   * Records an execution and returns true if a retry has been scheduled for the {@code result}, else returns false and
+   * marks the execution and associated {@code Future} as complete.
+   *
+   * @throws IllegalStateException if a retry method has already been called or the execution is already complete
+   */
+  boolean retryFor(Object result);
 
-    /**
-     * Executes the {@code callable} asynchronously until a successful result is
-     * returned or the configured {@link RetryPolicy} is exceeded.
-     *
-     * @throws NullPointerException
-     *             if the {@code callable} is null
-     * @throws CircuitBreakerOpenException
-     *             if a configured circuit breaker is open
-     */
-    public abstract <T> Future<T> get(ContextualCallable<T> callable);
+  /**
+   * Records an execution and returns true if a retry has been scheduled for the {@code result} or {@code failure}, else
+   * returns false and marks the execution and associated {@code Future} as complete.
+   * 
+   * @throws IllegalStateException if a retry method has already been called or the execution is already complete
+   */
+  boolean retryFor(Object result, Throwable failure);
 
-    /**
-     * Executes the {@code callable} asynchronously until a successful result is
-     * returned or the configured {@link RetryPolicy} is exceeded. This method
-     * is intended for integration with asynchronous code. Retries must be
-     * manually scheduled via one of the {@code AsyncExecution.retry} methods.
-     *
-     * @throws NullPointerException
-     *             if the {@code callable} is null
-     * @throws CircuitBreakerOpenException
-     *             if a configured circuit breaker is open
-     */
-    public abstract <T> Future<T> getAsync(AsyncCallable<T> callable);
-    
-    /**
-     * Executes the {@code runnable} asynchronously until successful or until
-     * the configured {@link RetryPolicy} is exceeded.
-     *
-     * @throws NullPointerException
-     *             if the {@code runnable} is null
-     * @throws CircuitBreakerOpenException
-     *             if a configured circuit breaker is open
-     */
-    public abstract Future<Void> run(Runnable runnable);
-
-    /**
-     * Executes the {@code runnable} asynchronously until successful or until
-     * the configured {@link RetryPolicy} is exceeded. This method is intended
-     * for integration with asynchronous code. Retries must be manually
-     * scheduled via one of the {@code AsyncExecution.retry} methods.
-     *
-     * @throws NullPointerException
-     *             if the {@code runnable} is null
-     * @throws CircuitBreakerOpenException
-     *             if a configured circuit breaker is open
-     */
-    public abstract Future<Void> runAsync(AsyncRunnable runnable);
+  /**
+   * Records an execution and returns true if a retry has been scheduled for the {@code failure}, else returns false and
+   * marks the execution and associated {@code Future} as complete.
+   *
+   * @throws NullPointerException if {@code failure} is null
+   * @throws IllegalStateException if a retry method has already been called or the execution is already complete
+   */
+  boolean retryOn(Throwable failure);
 
 }

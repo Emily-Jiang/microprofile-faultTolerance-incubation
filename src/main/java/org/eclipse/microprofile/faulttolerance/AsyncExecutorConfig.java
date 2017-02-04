@@ -26,123 +26,123 @@ import org.eclipse.microprofile.faulttolerance.spi.ContextualResultListener;
 import org.eclipse.microprofile.faulttolerance.spi.Scheduler;
 
 /**
- * Async Failsafe configuration.
+ * Async executor configuration.
  * <p>
  * Async execution event listeners are called asynchronously on the {@link Scheduler} or
- * {@link ScheduledExecutorService} associated with the Failsafe call.
+ * {@link ScheduledExecutorService} associated with the execution.
  *
  * @author Jonathan Halterman
  * @author Emily Jiang
  * @param <R> result type
- * @param <F> failsafe type - {@link SyncFailsafe} or {@link AsyncFailsafe}
+ * @param <F> executor type - {@link SyncExecutor} or {@link AsyncExecutor}
  */
-public interface AsyncExecutionConfig<R, F> extends ExecutionConfig<R, F> {
+public interface AsyncExecutorConfig<R, F> extends ExecutorConfig<R, F> {
 
     /**
-       * Registers the {@code listener} to be called asynchronously on Failsafe's configured executor or Scheduler when an
+       * Registers the {@code listener} to be called asynchronously on the configured executor or Scheduler when an
        * execution is aborted according to the retry policy.
        */
     public F onAbortAsync(ContextualResultListener<? extends R, ? extends Throwable> listener);
 
     /**
-       * Registers the {@code listener} to be called asynchronously on Failsafe's configured executor or Scheduler when an
+       * Registers the {@code listener} to be called asynchronously on the configured executor or Scheduler when an
        * execution is aborted according to the retry policy.
        */
     public F onAbortAsync(Consumer<? extends Throwable> listener);
 
     /**
-       * Registers the {@code listener} to be called asynchronously on Failsafe's configured executor or Scheduler when an
+       * Registers the {@code listener} to be called asynchronously on the configured executor or Scheduler when an
        * execution is aborted according to the retry policy.
        */
     public F onAbortAsync(BiConsumer<? extends R, ? extends Throwable> listener);
 
     /**
-       * Registers the {@code listener} to be called asynchronously on Failsafe's configured executor or Scheduler when an
+       * Registers the {@code listener} to be called asynchronously on the configured executor or Scheduler when an
        * execution is completed.
        */
     public F onCompleteAsync(ContextualResultListener<? extends R, ? extends Throwable> listener);
 
     /**
-       * Registers the {@code listener} to be called asynchronously on Failsafe's configured executor or Scheduler when an
+       * Registers the {@code listener} to be called asynchronously on the configured executor or Scheduler when an
        * execution is completed.
        */
     public F onCompleteAsync(BiConsumer<? extends R, ? extends Throwable> listener);
 
     /**
-       * Registers the {@code listener} to be called asynchronously on Failsafe's configured executor or Scheduler after a
+       * Registers the {@code listener} to be called asynchronously on the configured executor or Scheduler after a
        * failed execution attempt.
        */
     public F onFailedAttemptAsync(
                     ContextualResultListener<? extends R, ? extends Throwable> listener);
 
     /**
-       * Registers the {@code listener} to be called asynchronously on Failsafe's configured executor or Scheduler after a
+       * Registers the {@code listener} to be called asynchronously on the configured executor or Scheduler after a
        * failed execution attempt.
        */
     public F onFailedAttemptAsync(Consumer<? extends Throwable> listener);
 
     /**
-       * Registers the {@code listener} to be called asynchronously on Failsafe's configured executor or Scheduler after a
+       * Registers the {@code listener} to be called asynchronously on the configured executor or Scheduler after a
        * failed execution attempt.
        */
     public F onFailedAttemptAsync(BiConsumer<? extends R, ? extends Throwable> listener);
 
     /**
-       * Registers the {@code listener} to be called asynchronously on Failsafe's configured executor or Scheduler after a
+       * Registers the {@code listener} to be called asynchronously on the configured executor or Scheduler after a
        * failure occurs that cannot be retried.
        */
     public F onFailureAsync(ContextualResultListener<? extends R, ? extends Throwable> listener);
 
     /**
-       * Registers the {@code listener} to be called asynchronously on Failsafe's configured executor or Scheduler after a
+       * Registers the {@code listener} to be called asynchronously on the configured executor or Scheduler after a
        * failure occurs that cannot be retried.
        */
     public F onFailureAsync(Consumer<? extends Throwable> listener);
 
     /**
-       * Registers the {@code listener} to be called asynchronously on Failsafe's configured executor or Scheduler after a
+       * Registers the {@code listener} to be called asynchronously on the configured executor or Scheduler after a
        * failure occurs that cannot be retried.
        */
     public F onFailureAsync(BiConsumer<? extends R, ? extends Throwable> listener);
 
     /**
-       * Registers the {@code listener} to be called asynchronously on Failsafe's configured executor or Scheduler when an
+       * Registers the {@code listener} to be called asynchronously on the configured executor or Scheduler when an
        * execution fails and the max retry attempts or duration are exceeded.
        */
     public F onRetriesExceededAsync(Consumer<? extends Throwable> listener);
 
     /**
-       * Registers the {@code listener} to be called asynchronously on Failsafe's configured executor or Scheduler when an
+       * Registers the {@code listener} to be called asynchronously on the configured executor or Scheduler when an
        * execution fails and the max retry attempts or duration are exceeded.
        */
     public F onRetriesExceededAsync(BiConsumer<? extends R, ? extends Throwable> listener);
 
     /**
-       * Registers the {@code listener} to be called asynchronously on Failsafe's configured executor or Scheduler before a
+       * Registers the {@code listener} to be called asynchronously on the configured executor or Scheduler before a
        * retry is attempted.
        */
     public F onRetryAsync(ContextualResultListener<? extends R, ? extends Throwable> listener);
 
     /**
-       * Registers the {@code listener} to be called asynchronously on Failsafe's configured executor or Scheduler before a
+       * Registers the {@code listener} to be called asynchronously on the configured executor or Scheduler before a
        * retry is attempted.
        */
     public F onRetryAsync(Consumer<? extends Throwable> listener);
 
     /**
-       * Registers the {@code listener} to be called asynchronously on Failsafe's configured executor or Scheduler before a
+       * Registers the {@code listener} to be called asynchronously on the configured executor or Scheduler before a
        * retry is attempted.
        */
     public F onRetryAsync(BiConsumer<? extends R, ? extends Throwable> listener);
 
     /**
-       * Registers the {@code listener} to be called asynchronously on Failsafe's configured executor or Scheduler after a
+       * Registers the {@code listener} to be called asynchronously on the configured executor or Scheduler after a
        * successful execution.
        */
-    public F onSuccessAsync(BiConsumer<? extends R, ExecutionContext> listener);
+    public F onSuccessAsync(BiConsumer<? extends R, Execution> listener);
 
     /**
-       * Registers the {@code listener} to be called asynchronously on Failsafe's configured executor or Scheduler after a
+       * Registers the {@code listener} to be called asynchronously on the configured executor or Scheduler after a
        * successful execution.
        */
     public F onSuccessAsync(Consumer<? extends R> listener);

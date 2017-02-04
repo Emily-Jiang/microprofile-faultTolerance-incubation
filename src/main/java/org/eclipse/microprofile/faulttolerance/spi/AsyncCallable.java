@@ -18,7 +18,7 @@
 
 package org.eclipse.microprofile.faulttolerance.spi;
 
-import org.eclipse.microprofile.faulttolerance.AsyncExecutionContext;
+import org.eclipse.microprofile.faulttolerance.AsyncExecution;
 
 /**
  * A callable that manually triggers asynchronous retries or completion via an asynchronous execution.
@@ -31,5 +31,5 @@ public interface AsyncCallable<T> {
    * Handles an asynchronous execution, allowing retries or completion to be performed via the {@code execution}
    * reference.
    */
-  T call(AsyncExecutionContext execution) throws Exception;
+  T call(AsyncExecution execution) throws Exception;
 }
