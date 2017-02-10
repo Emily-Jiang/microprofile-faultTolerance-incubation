@@ -25,10 +25,11 @@ package org.eclipse.microprofile.faulttolerance;
 
 import java.util.concurrent.Callable;
 import java.util.concurrent.Future;
+import java.util.function.Consumer;
+import java.util.function.Function;
 
 import org.eclipse.microprofile.faulttolerance.spi.AsyncCallable;
 import org.eclipse.microprofile.faulttolerance.spi.AsyncRunnable;
-import org.eclipse.microprofile.faulttolerance.spi.ContextualCallable;
 
 /**
  * Performs asynchronous executions with failures handled according to a configured {@link #with(RetryPolicy) retry
@@ -68,7 +69,7 @@ public interface AsyncExecutor<R> extends ExecutorConfig<R, AsyncExecutor<R>> {
      *             if a configured circuit breaker is open
      */
     public abstract <T> java.util.concurrent.CompletableFuture<T> future(
-                    ContextualCallable<java.util.concurrent.CompletableFuture<T>> callable);
+                    Function<Execution, java.util.concurrent.CompletableFuture<T>> callable);
 
     /**
      * Executes the {@code callable} asynchronously until the resulting future
@@ -107,7 +108,7 @@ public interface AsyncExecutor<R> extends ExecutorConfig<R, AsyncExecutor<R>> {
      * @throws CircuitBreakerOpenException
      *             if a configured circuit breaker is open
      */
-    public abstract <T> Future<T> get(ContextualCallable<T> callable);
+    public abstract <T> Future<T> get(Function<Execution, T> callable);
 
     /**
      * Executes the {@code callable} asynchronously until a successful result is
@@ -132,6 +133,15 @@ public interface AsyncExecutor<R> extends ExecutorConfig<R, AsyncExecutor<R>> {
      *             if a configured circuit breaker is open
      */
     public abstract Future<Void> run(Runnable runnable);
+    
+    /**
+     * Executes the {@code runnable} asynchronously until successful or until the configured {@link RetryPolicy} is
+     * exceeded.
+     * 
+     * @throws NullPointerException if the {@code runnable} is null
+     * @throws CircuitBreakerOpenException if a configured circuit breaker is open
+     */
+    public abstract Future<Void> run(Consumer<Execution> runnable);
 
     /**
      * Executes the {@code runnable} asynchronously until successful or until
