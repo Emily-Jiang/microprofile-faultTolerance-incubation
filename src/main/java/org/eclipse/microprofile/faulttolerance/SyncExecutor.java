@@ -20,8 +20,9 @@ package org.eclipse.microprofile.faulttolerance;
 
 import java.util.concurrent.Callable;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.function.Consumer;
+import java.util.function.Function;
 
-import org.eclipse.microprofile.faulttolerance.spi.ContextualCallable;
 import org.eclipse.microprofile.faulttolerance.spi.Scheduler;
 
 /**
@@ -61,7 +62,7 @@ public interface SyncExecutor<R> extends ExecutorConfig<R, SyncExecutor<R>> {
      * @throws CircuitBreakerOpenException
      *             if a configured circuit is open.
      */
-    public abstract <T> T get(ContextualCallable<T> callable);
+    public abstract <T> T get(Function<Execution, T> callable);
 
     /**
      * Executes the {@code runnable} until successful or until the configured
@@ -76,6 +77,19 @@ public interface SyncExecutor<R> extends ExecutorConfig<R, SyncExecutor<R>> {
      *             if a configured circuit is open.
      */
     public abstract void run(Runnable runnable);
+    
+    /**
+     * Executes the {@code runnable} until successful or until the configured {@link RetryPolicy} is exceeded.
+     *
+     * @throws NullPointerException 
+     *             if the {@code runnable} is null
+     * @throws ExecutionException
+     *             if the {@code runnable} fails with a checked Exception or if
+     *             interrupted while waiting to perform a retry.
+     * @throws CircuitBreakerOpenException
+     *             if a configured circuit is open.
+     */
+    public abstract void run(Consumer<Execution> runnable);
 
     /**
      * Creates and returns a new AsyncExecutor instance that will perform
