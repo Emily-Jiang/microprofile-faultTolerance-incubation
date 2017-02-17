@@ -25,22 +25,29 @@ package org.eclipse.microprofile.faulttolerance;
  * @author Emily Jiang
  */
 public interface Executor {
-  /**
-   * Creates and returns a new SyncExecution instance that will perform executions and retries synchronously according
-   * to the {@code retryPolicy}.
-   * 
-   * @param <T> result type
-   * @throws NullPointerException if {@code retryPolicy} is null
-   */
-  <T> SyncExecutor<T> with(RetryPolicy retryPolicy);
+    /**
+     * Creates and returns a new SyncExecution instance that will perform executions and retries synchronously according
+     * to the {@code retryPolicy}.
+     *
+     * @param <T> result type
+     * @throws NullPointerException if {@code retryPolicy} is null
+     */
+    <T> SyncExecutor<T> with(RetryPolicy retryPolicy);
 
-  /**
-   * Creates and returns a new SyncExecution instance that will perform executions and retries synchronously according
-   * to the {@code circuitBreaker}.
-   * 
-   * @param <T> result type
-   * @throws NullPointerException if {@code circuitBreaker} is null
-   */
-  <T> SyncExecutor<T> with(CircuitBreaker circuitBreaker);
+    /**
+     * Creates and returns a new SyncExecution instance that will perform executions and retries synchronously according
+     * to the {@code circuitBreaker}.
+     *
+     * @param <T> result type
+     * @throws NullPointerException if {@code circuitBreaker} is null
+     */
+    <T> SyncExecutor<T> with(CircuitBreaker circuitBreaker);
 
+    /**
+     * Creates and returns a new SyncExecution instance that will perform executions within a defined bulkhead pattern.
+     *
+     * @param <T> result type
+     * @throws NullPointerException if {@code Bulkhead} is null
+     */
+    <T> SyncExecutor<T> with(Bulkhead bulkhead);
 }
