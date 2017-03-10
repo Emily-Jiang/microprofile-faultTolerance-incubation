@@ -1,6 +1,6 @@
 /*
  *******************************************************************************
- * Copyright (c) 2016 IBM Corp. and others
+ * Copyright (c) 2017 IBM Corp. and others
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,31 +16,33 @@
  *
  *******************************************************************************/
 
-package org.eclipse.microprofile.faulttolerance;
+package org.eclipse.microprofile.faulttolerance.cdi;
 
-import java.util.concurrent.Semaphore;
-import java.util.concurrent.ThreadPoolExecutor;
+import java.lang.annotation.Documented;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+import java.util.concurrent.TimeUnit;
 
 /**
- * A Bulkhead to limit the number of concurrent calls to a component by using a fixed number
- * of threads in a pool.
  *
- * @author Jonathan Halterman
- * @author Emily Jiang
  */
-public interface Bulkhead {
+@Retention(RetentionPolicy.RUNTIME)
+@Documented
+@Target({ ElementType.TYPE, ElementType.METHOD })
+public @interface CircuitBreaker {
 
-    /**
-     * Configure the bulkhead pattern via thread isolation
-     * @param executor
-     * @return
-     */
-    Bulkhead withThread(ThreadPoolExecutor executor);
+    Class<? extends Throwable>[] failOn() default RuntimeException.class;
 
-    /**
-     * Configure the bulkhead pattern via semaphore isolation
-     * @param semaphore
-     * @return
-     */
-    Bulkhead WithSemaphore(Semaphore semaphore);
+    long delay() default 2;
+
+    TimeUnit delayUnit() default TimeUnit.SECONDS;
+
+    long failThreshold() default 2;
+
+    long successThreshold() default 2;
+
+    long timeOut() default 2;
+
 }

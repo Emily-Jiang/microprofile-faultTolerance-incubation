@@ -1,6 +1,6 @@
 /*
  *******************************************************************************
- * Copyright (c) 2016 IBM Corp. and others
+ * Copyright (c) 2017 IBM Corp. and others
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,31 +16,34 @@
  *
  *******************************************************************************/
 
-package org.eclipse.microprofile.faulttolerance;
+package org.eclipse.microprofile.faulttolerance.cdi;
 
-import java.util.concurrent.Semaphore;
-import java.util.concurrent.ThreadPoolExecutor;
+import java.lang.annotation.Documented;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+import java.util.concurrent.TimeUnit;
 
 /**
- * A Bulkhead to limit the number of concurrent calls to a component by using a fixed number
- * of threads in a pool.
- *
- * @author Jonathan Halterman
- * @author Emily Jiang
+ * The Retry annotation to define the number of the retries and the fallback method on reaching the
+ * retry counts.
  */
-public interface Bulkhead {
+@Documented
+@Retention(RetentionPolicy.RUNTIME)
+@Target({ ElementType.METHOD, ElementType.TYPE })
+public @interface TimeOut {
 
     /**
-     * Configure the bulkhead pattern via thread isolation
-     * @param executor
-     * @return
+     *
+     * @return the timeout
      */
-    Bulkhead withThread(ThreadPoolExecutor executor);
+    long time() default 2;
 
     /**
-     * Configure the bulkhead pattern via semaphore isolation
-     * @param semaphore
-     * @return
+     *
+     * @return the time unit
      */
-    Bulkhead WithSemaphore(Semaphore semaphore);
+    TimeUnit timeUnit() default TimeUnit.SECONDS;
+
 }

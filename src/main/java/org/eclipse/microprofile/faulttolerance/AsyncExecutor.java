@@ -35,12 +35,12 @@ import org.eclipse.microprofile.faulttolerance.spi.AsyncRunnable;
  * Performs asynchronous executions with failures handled according to a configured {@link #with(RetryPolicy) retry
  * policy}, {@link #with(CircuitBreaker) circuit breaker} and
  * {@link #withFallback(java.util.function.BiFunction) fallback}.
- * 
+ *
  * @author Jonathan Halterman
  * @param <R> result type
  */
-public interface AsyncExecutor<R> extends ExecutorConfig<R, AsyncExecutor<R>> {
-  
+public interface AsyncExecutor<R> extends AsyncExecutorConfig<R, AsyncExecutor<R>> {
+
     /**
      * Executes the {@code callable} asynchronously until the resulting future
      * is successfully completed or the configured {@link RetryPolicy} is
@@ -122,7 +122,7 @@ public interface AsyncExecutor<R> extends ExecutorConfig<R, AsyncExecutor<R>> {
      *             if a configured circuit breaker is open
      */
     public abstract <T> Future<T> getAsync(AsyncCallable<T> callable);
-    
+
     /**
      * Executes the {@code runnable} asynchronously until successful or until
      * the configured {@link RetryPolicy} is exceeded.
@@ -133,11 +133,11 @@ public interface AsyncExecutor<R> extends ExecutorConfig<R, AsyncExecutor<R>> {
      *             if a configured circuit breaker is open
      */
     public abstract Future<Void> run(Runnable runnable);
-    
+
     /**
      * Executes the {@code runnable} asynchronously until successful or until the configured {@link RetryPolicy} is
      * exceeded.
-     * 
+     *
      * @throws NullPointerException if the {@code runnable} is null
      * @throws CircuitBreakerOpenException if a configured circuit breaker is open
      */
