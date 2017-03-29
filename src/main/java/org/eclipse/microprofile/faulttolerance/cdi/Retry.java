@@ -80,9 +80,9 @@ public @interface Retry {
 
     TimeUnit bakeOffUnit() default TimeUnit.SECONDS;
 
-    Class<? extends Throwable>[] retryOn() default { RuntimeException.class };
+    Class<? extends Throwable>[] retryOn() default { Throwable.class };
 
-    Class<? extends Throwable>[] aboartOn() default { RuntimeException.class };
+    Class<? extends Throwable>[] aboartOn() default { Throwable.class };
 
     /**
      * The fallback method

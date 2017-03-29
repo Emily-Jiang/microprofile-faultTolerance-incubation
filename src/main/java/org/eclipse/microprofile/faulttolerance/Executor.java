@@ -50,4 +50,5 @@ public interface Executor {
      * @throws NullPointerException if {@code Bulkhead} is null
      */
     <T> SyncExecutor<T> with(Bulkhead bulkhead);
+
 }

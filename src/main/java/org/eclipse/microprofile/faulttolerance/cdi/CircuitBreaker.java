@@ -33,7 +33,7 @@ import java.util.concurrent.TimeUnit;
 @Target({ ElementType.TYPE, ElementType.METHOD })
 public @interface CircuitBreaker {
 
-    Class<? extends Throwable>[] failOn() default RuntimeException.class;
+    Class<? extends Throwable>[] failOn() default Throwable.class;
 
     long delay() default 2;
 
