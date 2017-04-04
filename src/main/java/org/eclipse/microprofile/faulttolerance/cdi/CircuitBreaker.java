@@ -26,23 +26,43 @@ import java.lang.annotation.Target;
 import java.util.concurrent.TimeUnit;
 
 /**
- *
+ * Define the Circuit Breaker policy
+ *@author Emily Jiang
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 @Target({ ElementType.TYPE, ElementType.METHOD })
 public @interface CircuitBreaker {
 
+    /**
+     * Define the failure criteria
+     * @return the failure exception
+     */
     Class<? extends Throwable>[] failOn() default Throwable.class;
 
+    /**
+     *
+     * @return The delay time after the circuit is open
+     */
     long delay() default 2;
+
+    /**
+     *
+     * @return The delay unit after the circuit is open
+     */
 
     TimeUnit delayUnit() default TimeUnit.SECONDS;
 
+    /**
+     *
+     * @return The failure threshold to open the circuit
+     */
     long failThreshold() default 2;
 
+    /**
+     *
+     * @return The success threshold to fully close the circuit
+     */
     long successThreshold() default 2;
-
-    long timeOut() default 2;
 
 }

@@ -36,7 +36,8 @@ public @interface Retry {
 
     /**
      *
-     * @return The max number of retries.
+     * @return The max number of retries. -1 indicates retry forever.
+     * IllegalArgumentException if maxRetries <-1.
      */
     int maxRetries() default 3;
 
@@ -51,10 +52,10 @@ public @interface Retry {
      * @return the delay unit
      */
 
-    TimeUnit delayUnit() default TimeUnit.SECONDS;
+    TimeUnit delayUnit() default TimeUnit.MILLISECONDS;
 
     /**
-     * @return the maximum duration for the execution.
+     * @return the maximum duration to perform retries for.
      */
     int maxDuration() default 20;
 
@@ -62,32 +63,39 @@ public @interface Retry {
      *
      * @return the duration unit
      */
-    TimeUnit durationUnit() default TimeUnit.SECONDS;
+    TimeUnit durationUnit() default TimeUnit.MILLISECONDS;
 
     /**
      *
-     * @return
+     * @return the jitter that randomly vary retry delays by. e.g. a jitter of 200 milliseconds
+     * will randomly add betweem -200 and 200 milliseconds to each retry delay.
      */
-    int jitter() default 2;
-
-    int jitterFactor() default 2;
-
-    TimeUnit jitterDelayUnit() default TimeUnit.SECONDS;
-
-    int backOff() default 2;
-
-    int backOffFactor() default 2;
-
-    TimeUnit bakeOffUnit() default TimeUnit.SECONDS;
-
-    Class<? extends Throwable>[] retryOn() default { Throwable.class };
-
-    Class<? extends Throwable>[] aboartOn() default { Throwable.class };
+    int jitter() default 200;
 
     /**
-     * The fallback method
-     * @return the fallback method
+     *
+     * @return the jitter delay unit.
      */
-    String fallback() default "";
+    TimeUnit jitterDelayUnit() default TimeUnit.MILLISECONDS;
+
+    /**
+     * For each retry delay, a randomly portion of the delay multiplied by the jitterFactor will be added or subtracted to the delay.
+     * e.g. a retry delay of 200 milliseconds and a jitter of 0.25 will result in a random retry delay between 150 and 250 milliseconds.
+     * @return the jitter factor.
+     */
+
+    double jitterFactor() default 0.25;
+
+    /**
+     *
+     * @return Specify the failure to retry on
+     */
+    Class<? extends Throwable>[] retryOn() default { Throwable.class };
+
+    /**
+     *
+     * @return Specify the failure to abort on
+     */
+    Class<? extends Throwable>[] aboartOn() default { Throwable.class };
 
 }
