@@ -44,6 +44,6 @@ public @interface TimeOut {
      *
      * @return the time unit
      */
-    TimeUnit timeUnit() default TimeUnit.SECONDS;
+    TimeUnit timeUnit() default TimeUnit.MILLISECONDS;
 
 }

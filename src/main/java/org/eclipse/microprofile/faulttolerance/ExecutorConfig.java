@@ -18,7 +18,6 @@
 
 package org.eclipse.microprofile.faulttolerance;
 
-import java.time.Duration;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.function.BiConsumer;
@@ -209,7 +208,8 @@ public interface ExecutorConfig<R, F> {
      * {@link RetryPolicy#withMaxDuration(long, java.util.concurrent.TimeUnit)
      * max duration} are exceeded.
      */
-    public F onRetriesExceededAsync(Consumer<? extends Throwable> listener, ExecutorService executor);
+    public F onRetriesExceededAsync(Consumer<? extends Throwable> listener,
+                    ExecutorService executor);
 
     /**
      * Registers the {@code listener} to be called before an execution is
@@ -265,8 +265,7 @@ public interface ExecutorConfig<R, F> {
      * Registers the {@code listener} to be called asynchronously on the
      * {@code executor} when an execution is successful.
      */
-    public F onSuccessAsync(BiConsumer<? extends R, Execution> listener,
-                    ExecutorService executor);
+    public F onSuccessAsync(BiConsumer<? extends R, Execution> listener, ExecutorService executor);
 
     /**
      * Registers the {@code listener} to be called asynchronously on the
@@ -365,13 +364,5 @@ public interface ExecutorConfig<R, F> {
      *             if {@code withFallback} method has already been called
      */
     public F withFallback(R fallback);
-
-    /**
-     * Configures the timeout
-     * @param time
-     * @param timeUnit
-     * @return
-     */
-    public F withTimeOut(long time, Duration timeUnit);
 
 }

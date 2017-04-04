@@ -23,20 +23,21 @@ import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
+import java.util.concurrent.Callable;
 
 /**
- * Config the bulkhead policy whether to use threadpool or semaphore.
+ * Define the Fallback annotation to specify the fallback callable, BiConsumer or BiFuncation
+ *@author Emily Jiang
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-@Target({ ElementType.METHOD, ElementType.TYPE })
-public @interface Bulkhead {
-    public enum Mode {
-        THREADPOOL, SEMAPHORE;
+@Target({ ElementType.TYPE, ElementType.METHOD })
+public @interface Fallback {
 
-        private Mode() {
-        }
-    }
+    /**
+     *
+     * @return the fallback class
+     */
+    Class<?> fallback() default Callable.class;
 
-    Mode value() default Mode.THREADPOOL;
 }
