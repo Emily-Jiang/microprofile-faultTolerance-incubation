@@ -16,7 +16,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.eclipse.microprofile.faulttolerance.cdi;
+package org.eclipse.microprofile.fault.tolerance.inject;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
@@ -26,44 +26,25 @@ import java.lang.annotation.Target;
 import java.time.temporal.ChronoUnit;
 
 /**
- * Define the Circuit Breaker policy
+ * The Timeout annotation to define the timeout period
+ * retry counts.
  * @author <a href="mailto:emijiang@uk.ibm.com">Emily Jiang</a>
- *
  */
-@Retention(RetentionPolicy.RUNTIME)
 @Documented
-@Target({ ElementType.METHOD })
-public @interface CircuitBreaker {
-
-    /**
-     * Define the failure criteria
-     * @return the failure exception
-     */
-    Class<? extends Throwable>[] failOn() default Throwable.class;
+@Retention(RetentionPolicy.RUNTIME)
+@Target({ ElementType.METHOD})
+public @interface TimeOut {
 
     /**
      *
-     * @return The delay time after the circuit is open
+     * @return the timeout
      */
-    long delay() default 2;
+    long timeOut() default 1000;
 
     /**
      *
-     * @return The delay unit after the circuit is open
+     * @return the timeout unit
      */
-
-    ChronoUnit delayUnit() default ChronoUnit.MILLIS;
-
-    /**
-     *
-     * @return The failure threshold to open the circuit
-     */
-    long failThreshold() default 2;
-
-    /**
-     *
-     * @return The success threshold to fully close the circuit
-     */
-    long successThreshold() default 2;
+    ChronoUnit timeOutUnit() default ChronoUnit.MILLIS;
 
 }

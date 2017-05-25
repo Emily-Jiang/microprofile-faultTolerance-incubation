@@ -16,34 +16,42 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.eclipse.microprofile.faulttolerance.cdi;
+package org.eclipse.microprofile.fault.tolerance.inject;
 
-import java.lang.annotation.Documented;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-import java.time.temporal.ChronoUnit;
+import javax.interceptor.InvocationContext;
 
 /**
- * The Retry annotation to define the number of the retries and the fallback method on reaching the
- * retry counts.
+ * The event payload on execution failure.
+ * 
+ * @author <a href="mailto:emijiang@uk.ibm.com">Emily Jiang</a>
  */
-@Documented
-@Retention(RetentionPolicy.RUNTIME)
-@Target({ ElementType.METHOD, ElementType.TYPE })
-public @interface TimeOut {
 
-    /**
-     *
-     * @return the timeout
-     */
-    long timeOut() default 2;
+public interface ExecutionFailureEvent {
 
-    /**
-     *
-     * @return the time unit
-     */
-    ChronoUnit timeOutUnit() default ChronoUnit.MILLIS;
+	/**
+	 * 
+	 * @return whether the max retry has reached.
+	 */
+   boolean isRetryExceeded();
+   /**
+    * 
+    * @return whether the circuit is open.
+    */
+   boolean isCircuitOpen();
+   /**
+    * 
+    * @return whether the timeout has reached.
+    */
+   boolean isTimeOut();
+   /**
+    * 
+    * @return the invocationContext 
+    */
+   InvocationContext getInvocationContext();
+   /**
+    * 
+    * @return the exception
+    */
+   Throwable getException();
 
 }
