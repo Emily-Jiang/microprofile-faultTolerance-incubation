@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2016,2017 Contributors to the Eclipse Foundation
+ *******************************************************************************
+ * Copyright (c) 2016-2017 Contributors to the Eclipse Foundation
  *
  * See the NOTICE file(s) distributed with this work for additional
  * information regarding copyright ownership.
@@ -15,22 +16,15 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */
-package org.eclipse.microprofile.faulttolerance;
+ *******************************************************************************/
 
 /**
- * A Bulkhead to limit the number of concurrent calls to a component by using a fixed number
- * of threads in a pool.
+ * <p>Microprofile Fault Tolerance
  *
- * @author Jonathan Halterman
- * @author Emily Jiang
+ * 
+ *
+ * @author <a href="mailto:emijiang@uk.ibm.com">Emily Jiang</a>
+ * @version 1.0
  */
-public interface Bulkhead {
+package org.eclipse.microprofile.faulttolerance.spi;
 
-    /**
-     * Configure the bulkhead pattern via thread isolation
-     * @param executor
-     * @return
-     */
-    Bulkhead withThreadPool(int poolSize);
-}

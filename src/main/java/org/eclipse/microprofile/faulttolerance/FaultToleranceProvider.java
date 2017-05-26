@@ -18,19 +18,25 @@
  */
 package org.eclipse.microprofile.faulttolerance;
 
-/**
- * A Bulkhead to limit the number of concurrent calls to a component by using a fixed number
- * of threads in a pool.
- *
- * @author Jonathan Halterman
- * @author Emily Jiang
- */
-public interface Bulkhead {
+import org.eclipse.microprofile.faulttolerance.spi.FaultToleranceProviderResolver;
 
-    /**
-     * Configure the bulkhead pattern via thread isolation
-     * @param executor
-     * @return
-     */
-    Bulkhead withThreadPool(int poolSize);
+public final class FaultToleranceProvider {
+    private static final FaultToleranceProviderResolver INSTANCE = FaultToleranceProviderResolver.instance();
+
+    public static RetryPolicy newRetryPolicy() {
+        return INSTANCE.newRetryPolicy();
+    }
+
+    public static CircuitBreaker newCircuitBreaker() {
+        return INSTANCE.newCircuitBreaker();
+    }
+
+    public static Bulkhead newBulkhead() {
+        return INSTANCE.newBulkhead();
+    }
+
+    public static Executor newExecutor() {
+        return INSTANCE.newExecutor();
+    }
+
 }
