@@ -18,35 +18,30 @@
  */
 package org.eclipse.microprofile.fault.tolerance.inject;
 
+import java.lang.reflect.Method;
+
 /**
- * The event payload on execution failure.
+ * The execution context for the method being executed.
  * 
  * @author <a href="mailto:emijiang@uk.ibm.com">Emily Jiang</a>
  */
 
-public interface ExecutionFailureEvent {
+public interface ExecutionContext {
 
-	/**
-	 * 
-	 * @return whether the max retry has reached.
-	 */
-   boolean isRetryExceeded();
-   /**
-    * 
-    * @return whether the circuit is open.
-    */
-   boolean isCircuitOpen();
+	 /**
+     * Returns the method being executed
+     * 
+     * @return the method
+     */
+    public Method getMethod();
 
-   /**
-    * 
-    * @return the ExecutionContext for the method being executed 
-    */
-   ExecutionContext getInvocationContext();
-   
-   /**
-    * 
-    * @return the exception
-    */
-   Throwable getException();
+    /**
+     * Returns the parameter values being passed to the method 
+     * 
+     * @return the parameter values, as an array
+     * 
+     * 
+     */
+    public Object[] getParameters();
 
 }
