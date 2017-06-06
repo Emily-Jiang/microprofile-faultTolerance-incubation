@@ -23,6 +23,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
+import org.eclipse.microprofile.fault.tolerance.inject.CircuitBreaker;
 import org.eclipse.microprofile.faulttolerance.spi.Scheduler;
 
 /**
@@ -40,29 +41,31 @@ public interface SyncExecutor<R> extends ExecutorConfig<R, SyncExecutor<R>> {
      * Executes the {@code callable} until a successful result is returned or
      * the configured {@link RetryPolicy} is exceeded.
      *
+     * @throws Throwable
+     *             if the {@code callable} fails with a Throwable
      * @throws NullPointerException
      *             if the {@code callable} is null
-     * @throws ExecutionException
-     *             if the {@code callable} fails with a checked Exception or if
-     *             interrupted while waiting to perform a retry.
+     * @throws FaultToleranceRuntimeException
+     *             if interrupted while waiting to perform a retry.
      * @throws CircuitBreakerOpenException
      *             if a configured circuit is open.
      */
-    public abstract <T> T get(Callable<T> callable);
+    public abstract <T> T get(Callable<T> callable) throws Throwable;
 
     /**
      * Executes the {@code callable} until a successful result is returned or
      * the configured {@link RetryPolicy} is exceeded.
      *
+     * @throws Throwable
+     *             if the {@code callable} fails with a Throwable
      * @throws NullPointerException
      *             if the {@code callable} is null
-     * @throws ExecutionException
-     *             if the {@code callable} fails with a checked Exception or if
-     *             interrupted while waiting to perform a retry.
+     * @throws FaultToleranceRuntimeException
+     *             if interrupted while waiting to perform a retry.
      * @throws CircuitBreakerOpenException
      *             if a configured circuit is open.
      */
-    public abstract <T> T get(Function<Execution, T> callable);
+    public abstract <T> T get(Function<Execution, T> callable) throws Throwable;
 
     /**
      * Executes the {@code runnable} until successful or until the configured
@@ -70,20 +73,20 @@ public interface SyncExecutor<R> extends ExecutorConfig<R, SyncExecutor<R>> {
      *
      * @throws NullPointerException
      *             if the {@code runnable} is null
-     * @throws ExecutionException
+     * @throws FaultToleranceRuntimeException
      *             if the {@code runnable} fails with a checked Exception or if
      *             interrupted while waiting to perform a retry.
      * @throws CircuitBreakerOpenException
      *             if a configured circuit is open.
      */
     public abstract void run(Runnable runnable);
-    
+
     /**
      * Executes the {@code runnable} until successful or until the configured {@link RetryPolicy} is exceeded.
      *
-     * @throws NullPointerException 
+     * @throws NullPointerException
      *             if the {@code runnable} is null
-     * @throws ExecutionException
+     * @throws FaultToleranceRuntimeException
      *             if the {@code runnable} fails with a checked Exception or if
      *             interrupted while waiting to perform a retry.
      * @throws CircuitBreakerOpenException

@@ -18,6 +18,8 @@
  */
 package org.eclipse.microprofile.faulttolerance;
 
+import java.util.concurrent.ScheduledExecutorService;
+
 import org.eclipse.microprofile.faulttolerance.spi.FaultToleranceProviderResolver;
 
 public final class FaultToleranceProvider {
@@ -27,7 +29,7 @@ public final class FaultToleranceProvider {
         return INSTANCE.newRetryPolicy();
     }
 
-    public static CircuitBreaker newCircuitBreaker() {
+    public static CircuitBreakerPolicy newCircuitBreaker() {
         return INSTANCE.newCircuitBreaker();
     }
 
@@ -39,4 +41,27 @@ public final class FaultToleranceProvider {
         return INSTANCE.newExecutor();
     }
 
+    public static SyncExecutor<?> newExecutor(RetryPolicy retryPolicy) {
+        return newExecutor().with(retryPolicy);
+    }
+
+    public static SyncExecutor<?> newExecutor(CircuitBreakerPolicy circuitBreakerPolicy) {
+        return newExecutor().with(circuitBreakerPolicy);
+    }
+
+    public static SyncExecutor<?> newExecutor(Bulkhead bulkhead) {
+        return newExecutor().with(bulkhead);
+    }
+
+    public static AsyncExecutor<?> newExecutor(RetryPolicy retryPolicy, ScheduledExecutorService executorService) {
+        return newExecutor(retryPolicy).with(executorService);
+    }
+
+    public static AsyncExecutor<?> newExecutor(CircuitBreakerPolicy circuitBreakerPolicy, ScheduledExecutorService executorService) {
+        return newExecutor(circuitBreakerPolicy).with(executorService);
+    }
+
+    public static AsyncExecutor<?> newExecutor(Bulkhead bulkhead, ScheduledExecutorService executorService) {
+        return newExecutor(bulkhead).with(executorService);
+    }
 }

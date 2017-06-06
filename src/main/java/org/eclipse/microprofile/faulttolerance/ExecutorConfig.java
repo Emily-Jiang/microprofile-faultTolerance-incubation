@@ -282,7 +282,7 @@ public interface ExecutorConfig<R, F> {
      * @throws IllegalStateException
      *             if a circuit breaker is already configured
      */
-    public F with(CircuitBreaker circuitBreaker);
+    public F with(CircuitBreakerPolicy circuitBreaker);
 
     /**
      * Configures the {@code retryPolicy} to be used for retrying failed

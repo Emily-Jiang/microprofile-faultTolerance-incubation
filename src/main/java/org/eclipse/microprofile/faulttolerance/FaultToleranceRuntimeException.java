@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017 Contributors to the Eclipse Foundation
+ * Copyright (c) 2016,2017 Contributors to the Eclipse Foundation
  *
  * See the NOTICE file(s) distributed with this work for additional
  * information regarding copyright ownership.
@@ -16,38 +16,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.eclipse.microprofile.fault.tolerance.inject;
+package org.eclipse.microprofile.faulttolerance;
 
 /**
- * The event payload on execution failure.
- *
- * @author <a href="mailto:emijiang@uk.ibm.com">Emily Jiang</a>
+ * Thrown when a synchronous execution fails with a checked Exception. Use {@link Throwable#getCause()} to learn the
+ * cause of the failure.
+ * 
+ * @author Jonathan Halterman
  */
+public class FaultToleranceRuntimeException extends RuntimeException {
+  public FaultToleranceRuntimeException() {
+  }
 
-public interface ExecutionFailureEvent {
-
-    /**
-     * 
-     * @return whether the max retry has reached.
-     */
-    boolean isRetryExceeded();
-
-    /**
-     * 
-     * @return whether the circuit is open.
-     */
-    boolean isCircuitOpen();
-
-    /**
-     * 
-     * @return the ExecutionContext for the method being executed
-     */
-    ExecutionContext getExecutionContext();
-
-    /**
-     * 
-     * @return the exception
-     */
-    Throwable getException();
-
+  public FaultToleranceRuntimeException(Throwable t) {
+    super(t);
+  }
 }

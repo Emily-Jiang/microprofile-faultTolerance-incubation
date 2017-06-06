@@ -41,7 +41,7 @@ public interface Executor {
      * @param <T> result type
      * @throws NullPointerException if {@code circuitBreaker} is null
      */
-    <T> SyncExecutor<T> with(CircuitBreaker circuitBreaker);
+    <T> SyncExecutor<T> with(CircuitBreakerPolicy circuitBreaker);
 
     /**
      * Creates and returns a new SyncExecution instance that will perform executions within a defined bulkhead pattern.
