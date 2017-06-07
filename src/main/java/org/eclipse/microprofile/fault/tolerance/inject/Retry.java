@@ -20,6 +20,7 @@ package org.eclipse.microprofile.fault.tolerance.inject;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
+import java.lang.annotation.Inherited;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
@@ -28,12 +29,14 @@ import java.time.temporal.ChronoUnit;
 /**
  * The Retry annotation to define the number of the retries and the fallback method on reaching the
  * retry counts.
+ *
  * @author <a href="mailto:emijiang@uk.ibm.com">Emily Jiang</a>
  * @author John Ament
  */
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
-@Target({ ElementType.METHOD})
+@Target({ ElementType.METHOD, ElementType.TYPE })
+@Inherited
 public @interface Retry {
 
     /**
@@ -44,6 +47,7 @@ public @interface Retry {
 
     /**
      * The delay between retries. Defaults to 0.
+     *
      * @return the delay time
      */
     long delay() default 0;
@@ -69,7 +73,7 @@ public @interface Retry {
     /**
      *
      * @return the jitter that randomly vary retry delays by. e.g. a jitter of 20 milliseconds
-     * will randomly add betweem -200 and 200 milliseconds to each retry delay.
+     *         will randomly add betweem -200 and 200 milliseconds to each retry delay.
      */
     long jitter() default 200;
 
@@ -79,7 +83,6 @@ public @interface Retry {
      */
     ChronoUnit jitterDelayUnit() default ChronoUnit.MILLIS;
 
-    
     /**
      *
      * @return Specify the failure to retry on
@@ -90,6 +93,6 @@ public @interface Retry {
      *
      * @return Specify the failure to abort on
      */
-    Class<? extends Throwable>[] abortOn() default { Throwable.class };
+    Class<? extends Throwable>[] abortOn() default {};
 
 }

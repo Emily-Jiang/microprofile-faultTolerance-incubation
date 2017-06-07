@@ -25,7 +25,7 @@ import java.security.PrivilegedAction;
 import java.util.ServiceLoader;
 
 import org.eclipse.microprofile.faulttolerance.Bulkhead;
-import org.eclipse.microprofile.faulttolerance.CircuitBreaker;
+import org.eclipse.microprofile.faulttolerance.CircuitBreakerPolicy;
 import org.eclipse.microprofile.faulttolerance.Executor;
 import org.eclipse.microprofile.faulttolerance.RetryPolicy;
 
@@ -39,7 +39,7 @@ public abstract class FaultToleranceProviderResolver {
 
     public abstract RetryPolicy newRetryPolicy();
 
-    public abstract CircuitBreaker newCircuitBreaker();
+    public abstract CircuitBreakerPolicy newCircuitBreaker();
 
     public abstract Bulkhead newBulkhead();
 

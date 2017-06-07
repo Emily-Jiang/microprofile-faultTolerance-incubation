@@ -20,6 +20,7 @@ package org.eclipse.microprofile.fault.tolerance.inject;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
+import java.lang.annotation.Inherited;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
@@ -27,16 +28,19 @@ import java.time.temporal.ChronoUnit;
 
 /**
  * Define the Circuit Breaker policy
+ *
  * @author <a href="mailto:emijiang@uk.ibm.com">Emily Jiang</a>
  *
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-@Target({ ElementType.METHOD })
+@Target({ ElementType.METHOD, ElementType.TYPE })
+@Inherited
 public @interface CircuitBreaker {
 
     /**
      * Define the failure criteria
+     *
      * @return the failure exception
      */
     Class<? extends Throwable>[] failOn() default Throwable.class;
@@ -53,20 +57,22 @@ public @interface CircuitBreaker {
      */
 
     ChronoUnit delayUnit() default ChronoUnit.MILLIS;
-    
 
     /**
-     * The number of consecutive requests in a rolling window 
+     * The number of consecutive requests in a rolling window
      * that will trip the circuit.
+     *
      * @return the number of the consecutive requests in a rolling window
      *
      */
-    long requestVolumeThreshold() default 20;
+    int requestVolumeThreshold() default 20;
+
     /**
      * The failure threshold to trigger the circuit to open.
-     * e.g. if the requestVolumeThreshold is 20 and failureRation is .50, 
+     * e.g. if the requestVolumeThreshold is 20 and failureRation is .50,
      * more than 10 failures in 20 consecutive requests will trigger
      * the circuit to open.
+     *
      * @return The failure threshold to open the circuit
      */
     double failureRatio() default .50;
@@ -74,8 +80,9 @@ public @interface CircuitBreaker {
     /**
      * For an open circuit, after the delay period is reached, once the successThreshold
      * is reached, the circuit is back to close again.
+     *
      * @return The success threshold to fully close the circuit
      */
-    long successThreshold() default 1;
+    int successThreshold() default 1;
 
 }
